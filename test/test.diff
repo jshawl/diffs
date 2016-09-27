@@ -1,0 +1,95 @@
+diff --git a/diff.js b/diff.js
+index bcfe2e7..5468958 100644
+--- a/diff.js
++++ b/diff.js
+@@ -1,3 +1,25 @@
+ var diff = (function(){
+-  return function(){}
+-})
++  return function(content){
++    return {
++      filename: filename(content),
++      lineRange: lineRange(content)
++    }
++  }
++  function filename(str){
++    var names = str.split("\n").filter((line) => {
++      return line.match(/^[-+]{3}/)
++    }).map(function(name){
++      return name.substr(6)
++    })
++    return names[0]
++  }
++  function lineRange(str){
++    var matches = str.match(/@@ (.*) @@\n/)[1].split(" ")
++    var from = matches[0].substr(1).split(",").map(Number)
++    var to = matches[1].substr(1).split(",").map(Number)
++    return {
++      from: from,
++      to: to
++    }
++  }
++})()
+diff --git a/test/index.html b/test/index.html
+index 926aa1d..91c015a 100644
+--- a/test/index.html
++++ b/test/index.html
+@@ -11,15 +11,12 @@
+   <script src="lib/jasmine-2.5.2/jasmine-html.js"></script>
+   <script src="lib/jasmine-2.5.2/boot.js"></script>
+ 
+-  <!-- include source files here... -->
+   <script src="../diff.js"></script>
+ 
+-  <!-- include spec files here... -->
+   <script src="spec/SpecHelper.js"></script>
+   <script src="spec/DiffSpec.js"></script>
+-
+ </head>
+-
+ <body>
++  <!-- addition -->
+ </body>
+ </html>
+diff --git a/test/spec/DiffSpec.js b/test/spec/DiffSpec.js
+index 81bb922..fa6b03c 100644
+--- a/test/spec/DiffSpec.js
++++ b/test/spec/DiffSpec.js
+@@ -1,5 +1,37 @@
++const content = `diff --git a/test/index.html b/test/index.html
++index 926aa1d..91c015a 100644
++--- a/test/index.html
+++++ b/test/index.html
++@@ -11,15 +11,12 @@
++   <script src="lib/jasmine-2.5.2/jasmine-html.js"></script>
++   <script src="lib/jasmine-2.5.2/boot.js"></script>
++
++-  <!-- include source files here... -->
++   <script src="../diff.js"></script>
++
++-  <!-- include spec files here... -->
++   <script src="spec/SpecHelper.js"></script>
++   <script src="spec/DiffSpec.js"></script>
++-
++ </head>
++-
++ <body>
+++  <!-- addition -->
++ </body>
++ </html>`
++
+ describe("Diff", function(){
++  var d = diff(content)
+   it("is a function", function(){
+     expect(typeof diff).toBe("function")
+   })
++  it("has a filename", function(){
++    expect(d.filename).toBe("test/index.html")
++  })
++  it("has a line range", function(){
++    expect(d.lineRange.from[0]).toBe(11)
++    expect(d.lineRange.from[1]).toBe(15)
++    expect(d.lineRange.to[0]).toBe(11)
++    expect(d.lineRange.to[1]).toBe(12)
++  })
+ })

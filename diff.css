@@ -1,0 +1,11 @@
+.diff{
+  font-family: Monaco, monospace;
+}
+
+.diff .minus{
+  background:#FFECEC;
+}
+
+.diff .plus{
+  background:#E9FFE9;
+}
