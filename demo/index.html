@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="../diff.css" media="screen" title="no title" charset="utf-8">
+<script type="text/javascript" src='../diff.js'></script>
+<pre class='diff' id=pre>
+  <a href='/demo/#/created.diff'>created</a>
+  <a href='/demo/#/modified.diff'>modified</a>
+  <a href='/demo/#/removed.diff'>removed</a>
+</pre>
+<script type="text/javascript">
+  function init(){
+    var xhr = new XMLHttpRequest()
+    var file = location.hash.substr(2)
+    xhr.open("GET",file)
+    xhr.send()
+    var d
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 400) {
+	d = diff(xhr.responseText)
+	var html = diff(xhr.responseText).toHTML()
+	console.log(html)
+	pre.innerHTML = html
+      }
+    }
+  }
+  init()
+  onhashchange = init
+</script>

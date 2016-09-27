@@ -6,9 +6,10 @@ var diff = (function(){
         return this.hunks.map(hunk => {
 	  var from = hunk.lineRange.from[0] - 1
 	  var to = hunk.lineRange.to[0] - 1
-          return "<h2>"+hunk.filename+"</h2>" + hunk.content.split("\n").map(line=>{
+          return "<h3>"+hunk.filename+"</h3>" + hunk.content.split("\n").map(line=>{
             line = line.replace('<','&lt;')
             line = line.replace('`','&#96;')
+	    if(line === '') return
             if(line.match(/^-/)){
 	      from++
               return `<div class='minus' to='${to}' from='${from}'>${line}</div>`
@@ -32,7 +33,11 @@ var diff = (function(){
     }).map(function(name){
       return name.substr(6)
     })
-    return names[0]
+    if(names[0] === "ev/null")
+      return names[1] + " created"
+    if(names[1] === "ev/null")
+      return names[0] + " deleted"
+    return names[0] + " modified"
   }
   function lineRange(str){
     var matches = str.match(/@@ (.*) @@\n/)[1].split(" ")
@@ -58,7 +63,7 @@ var diff = (function(){
     return hs.map( h => {
       return {
         content: h.split("\n").filter(line=>{
-          return !line.match(/^(diff --git|index|---|\+\+\+|@@)/)
+          return !line.match(/^(diff --git|index|---|\+\+\+|@@|deleted file mode|new file mode)/)
         }).join("\n"),
         filename: filename(h),
         lineRange: lineRange(h)

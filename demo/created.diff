@@ -1,0 +1,10 @@
+diff --git a/added.js b/added.js
+new file mode 100644
+index 0000000..2fbb20d
+--- /dev/null
++++ b/added.js
+@@ -0,0 +1,3 @@
++(function(){
++  // this file was created
++})()
+\ No newline at end of file

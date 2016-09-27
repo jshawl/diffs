@@ -1,0 +1,10 @@
+diff --git a/renamed.js b/renamed.js
+deleted file mode 100644
+index 98abeb4..0000000
+--- a/renamed.js
++++ /dev/null
+@@ -1,3 +0,0 @@
+-(function(){
+-  // this file was modified
+-})()
+\ No newline at end of file

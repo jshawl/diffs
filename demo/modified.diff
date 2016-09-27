@@ -1,0 +1,10 @@
+diff --git a/renamed.js b/renamed.js
+index 2fbb20d..98abeb4 100644
+--- a/renamed.js
++++ b/renamed.js
+@@ -1,3 +1,3 @@
+ (function(){
+-  // this file was created
++  // this file was modified
+ })()
+\ No newline at end of file
