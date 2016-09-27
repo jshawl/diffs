@@ -9,3 +9,35 @@
 .diff .plus{
   background:#E9FFE9;
 }
+
+.diff div{
+  position:relative;
+  padding-left:4em;
+}
+
+.diff div:before,
+.diff div:after{
+  top:0;
+  display:block;
+  position:absolute;
+  width:2em;
+  font-size:.8em;
+  line-height:1.75;
+  height:100%;
+  background:#fff;
+}
+.diff div:before{
+  content:attr(from);
+  left:0;
+}
+.diff div:after{
+  content:attr(to);
+  left:2em;
+}
+
+.diff .minus:after{
+  content:'.'
+}
+.diff .plus:before{
+  content:'.'
+}

@@ -4,13 +4,22 @@ var diff = (function(){
       hunks: hunks(content),
       toHTML: function(){
         return this.hunks.map(hunk => {
-          return "<h2>"+hunk.filename+":"+hunk.lineRange.from[0]+"</h2>" + hunk.content.split("\n").map(line=>{
+	  var from = hunk.lineRange.from[0] - 1
+	  var to = hunk.lineRange.to[0] - 1
+          return "<h2>"+hunk.filename+"</h2>" + hunk.content.split("\n").map(line=>{
             line = line.replace('<','&lt;')
-            if(line.match(/^-/))
-              return "<div class='minus'>" + line + "</div>"
-            if(line.match(/^\+/))
-              return "<div class='plus'>" + line + "</div>"
-            return "<div>" + line + "</div>"
+            line = line.replace('`','&#96;')
+            if(line.match(/^-/)){
+	      from++
+              return `<div class='minus' to='${to}' from='${from}'>${line}</div>`
+	    }
+            if(line.match(/^\+/)){
+	      to++
+              return `<div class='plus' to='${to}' from='${from}'>${line}</div>`
+	    }
+	    from++
+	    to++
+            return `<div to='${to}' from='${from}'>${line}</div>`
           }).join("")
         }).join("<hr>")
       }
